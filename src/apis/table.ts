@@ -1,31 +1,48 @@
 import service from "@/utils/request";
-import type { Response } from '@/utils/request';
+import type { ResultData, ResPage, ReqPage } from './types';
 
-interface Apis {
-    'getList': {
-        req: {
-            name: string | null,
-            address: string | null,
-            pageNum: number,
-            pageSize: number
-        },
-        res: Response<{
-            rows: ({
-                name: string | null,
-                address: string | null
-            })[],
-            total: number,
-        }>
+export namespace GetList {
+    export type Item = {
+        id: string,
+        name: string | null,
+        address: string | null
     }
+
+    export type Req = Item & ReqPage
+    export type Res = ResultData<ResPage<Item>>
 }
-function getList(params: Apis['getList']['req']) {
-    return service.request<Apis['getList']['req'], Apis['getList']['res']>({
-        url: '/table/list',
+function getList(params: GetList.Req) {
+    return service.request<GetList.Req, GetList.Res>({
+        url: '/table/data/list',
         method: 'get',
         params
     })
 }
 
+export namespace Remove {
+    export type Req = string;
+    export type Res = ResultData<void>
+}
+function remove(id: Remove.Req) {
+    return service.request<Remove.Req, Remove.Res>({
+        url: `/table/data/${id}`,
+        method: 'delete'
+    })
+}
+
+export namespace GetInfo {
+    export type Req = string;
+    export type Res = ResultData<GetList.Item>
+}
+function getInfo(id: GetInfo.Req) {
+    return service.request<GetInfo.Req, GetInfo.Res>({
+        url: `/table/data/${id}`,
+        method: 'get'
+    })
+}
+
 export default {
-    getList
+    getList,
+    getInfo,
+    remove
 }

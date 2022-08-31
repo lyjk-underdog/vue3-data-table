@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
-import App from './index.vue'
+import App from './App.vue'
 import '../mock'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.mount('#app')

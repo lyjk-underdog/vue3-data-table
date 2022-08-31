@@ -7,8 +7,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    DataTable: typeof import('./src/components/DataTable/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
@@ -20,6 +22,10 @@ declare module '@vue/runtime-core' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     FormControl: typeof import('./src/components/FormControl.vue')['default']
+    FormRenderer: typeof import('./src/components/DataTable/components/FormRenderer.vue')['default']
+    Seaerch: typeof import('./src/components/DataTable/components/Seaerch.vue')['default']
+    Search: typeof import('./src/components/DataTable/components/Search.vue')['default']
+    SearchForm: typeof import('./src/components/DataTable/components/SearchForm.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

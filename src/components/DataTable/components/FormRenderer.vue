@@ -1,7 +1,8 @@
 <template>
-    <ElForm ref="elFormRef" :model="model" :inline="props.inline" :disabled="props.disabled">
+    <ElForm ref="elFormRef" :model="props.model" :inline="props.inline" :disabled="props.disabled">
         <ElFormItem v-for="(field, index) in props.fields" :key="index" :label="field.label" :prop="field.prop"
             :rules="field.rules">
+
             <template v-if="field.type === 'input'">
                 <ElInput :model-value="operateForm('get', field.prop)"
                     @update:model-value="(newVal) => operateForm('set', field.prop, newVal)" v-bind="field.attrs" />
@@ -31,7 +32,7 @@
 <script setup lang="ts">
 import type { FormRendererTypes } from '../types';
 import type { ElForm, FormValidateCallback, FormItemProp } from 'element-plus';
-import { ref } from 'vue';
+import { ref , onUpdated } from 'vue';
 import type { Arrayable } from 'element-plus/es/utils/typescript';
 
 interface Props {
@@ -49,7 +50,6 @@ const props = withDefaults(defineProps<Props>(), {
 let elFormRef = ref<InstanceType<typeof ElForm> | null>(null);
 
 function operateForm(type: 'set' | 'get', prop: FormRendererTypes.Field['prop'], val?: any) {
-
     const propArr = typeof prop === 'string' ? prop.split('.') : prop;
 
     if (type === 'get') {
@@ -68,13 +68,23 @@ function validate(callback?: FormValidateCallback | undefined) {
     return elFormRef.value?.validate(callback);
 }
 
-function resetFields(p?: Arrayable<FormItemProp> | undefined) {
-    return elFormRef.value?.resetFields(p);
+function resetFields(props?: Arrayable<FormItemProp> | undefined) {
+    return elFormRef.value?.resetFields(props);
 }
+
+function clearValidate(props?: Arrayable<FormItemProp> | undefined) {
+    return elFormRef.value?.clearValidate(props);
+}
+
+onUpdated(() => {
+    console.log(1);
+    
+})
 
 defineExpose({
     validate,
-    resetFields
+    resetFields,
+    clearValidate
 })
 
 </script>

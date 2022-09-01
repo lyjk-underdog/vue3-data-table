@@ -1,5 +1,5 @@
 <template>
-    <DataTable :apis="apis" :columns="columns" />
+    <DataTable :apis="apis" :columns="columns" :editor="editor" />
 </template>
 
 <script setup lang="tsx">
@@ -8,7 +8,8 @@ import DataTable from '@/components/DataTable/index.vue';
 import tableApis from '@/apis/table';
 
 const apis: TableDataTypes.Apis = {
-    list: tableApis.getList
+    list: tableApis.getList,
+    read: tableApis.getInfo
 }
 
 const columns: TableDataTypes.Column[] = [
@@ -21,6 +22,19 @@ const columns: TableDataTypes.Column[] = [
         }
     }
 ]
+
+const editor: TableDataTypes.Editor = {
+    model: {
+        name: null
+    },
+    fields: [
+        {
+            type: 'input',
+            label: '姓名',
+            prop: 'name',
+        }
+    ]
+}
 
 </script>
 

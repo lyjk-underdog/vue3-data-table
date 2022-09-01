@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FormRenderer } from '../types';
+import type { FormRenderer, SearchForm } from '../types';
 import FormRendererVue from './FormRenderer.vue';
 
 interface Props {

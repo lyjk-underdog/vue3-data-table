@@ -8,12 +8,14 @@ function useEditor(fields: DataTable.EditFields, apis: DataTable.Apis, id: DataT
         visible: EditeForm.Visible
         form: EditeForm.Model,
         fields: EditeForm.Fields,
-        mode: EditeForm.Mode
+        mode: EditeForm.Mode,
+        loading: EditeForm.Loading
     }>({
         visible: false,
         form: {},
         fields: [],
         mode: EditeForm.Mode.Create,
+        loading: false
     })
 
     // 根据edite-fields初始化表单结构
@@ -34,9 +36,13 @@ function useEditor(fields: DataTable.EditFields, apis: DataTable.Apis, id: DataT
         state.mode = mode;
         state.visible = true;
 
-        if (mode === EditeForm.Mode.Update) {
+        if (mode === EditeForm.Mode.Update || mode === EditeForm.Mode.View) {
+            state.loading = true;
+
             let { data } = await apis.read(row[id]);
             state.form = data;
+
+            state.loading = false;
 
             return;
         }
@@ -49,29 +55,25 @@ function useEditor(fields: DataTable.EditFields, apis: DataTable.Apis, id: DataT
 
     // 新增、更新
     async function edit() {
-        const strategy = {
-            [EditeForm.Mode.Create]: async () => {
-                await apis.create(state.form);
-                ElMessage({
-                    type: 'success',
-                    message: '新增成功！'
-                })
-            },
-            [EditeForm.Mode.Update]: async () => {
-                await apis.update(state.form);
-                ElMessage({
-                    type: 'success',
-                    message: '更新成功！'
-                })
-            }
+
+        if (state.mode === EditeForm.Mode.Create) {
+            await apis.create(state.form);
+            ElMessage({
+                type: 'success',
+                message: '新增成功！'
+            })
         }
 
-        await strategy[state.mode]();
+        if (state.mode === EditeForm.Mode.Update) {
+            await apis.update(state.form);
+            ElMessage({
+                type: 'success',
+                message: '更新成功！'
+            })
+        }
 
         state.visible = false;
     }
-
-
 
     return reactive({
         ...toRefs(state),

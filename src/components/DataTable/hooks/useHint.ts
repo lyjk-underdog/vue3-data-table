@@ -33,9 +33,8 @@ function useHint(
                         } catch (e) {
                             instance.confirmButtonLoading = false;
                             instance.confirmButtonText = "确定";
-                            console.error(e);
 
-                            reject();
+                            reject(e);
                         }
                     } else {
                         done();
@@ -50,9 +49,8 @@ function useHint(
                     message: `已取消${message}!`
                 });
             }
-            else console.error(e);
 
-            reject();
+            reject(e);
         }
     })
 

@@ -1,8 +1,8 @@
 <template>
     <div class="c-data-table">
 
-        <EditeFormVue v-model:visible="editor.visible" :model="editor.form" :fields="editor.fields" :mode="editor.mode"
-            @submit="handleEdit" />
+        <EditeFormVue v-model:visible="editor.visible" :loading="editor.loading" :model="editor.form"
+            :fields="editor.fields" :mode="editor.mode" @submit="handleEdit" />
 
         <div class="c-data-table_header">
             <SearchFormVue :model="search.params" :files="search.fields" @search="table.getList"
@@ -22,8 +22,9 @@
                     :label="column.label" :prop="column.prop" :formatter="column.formatter" />
                 <ElTableColumn label="操作" align="center">
                     <template #default="{ row }">
-                        <el-button @click="() => editor.open(EditeForm.Mode.Update, row)">修改</el-button>
-                        <el-button @click="() => handleDelete(row)">删除</el-button>
+                        <ElButton @click="() => editor.open(EditeForm.Mode.Update, row)">修改</ElButton>
+                        <ElButton @click="() => editor.open(EditeForm.Mode.View, row)">详情</ElButton>
+                        <ElButton @click="() => handleDelete(row)">删除</ElButton>
                     </template>
                 </ElTableColumn>
             </ElTable>
@@ -77,12 +78,17 @@ const table = useTable(props.apis, params);
 const editor = useEditor(props.editFileds, props.apis, props.id);
 
 async function handleDelete(row: any) {
-    await editor.remove(row);
-    table.getList();
+    try {
+        await editor.remove(row);
+        table.getList();
+    } catch (e) { 
+        console.error(e);
+    }
 }
 
-async function handleEdit() {
+async function handleEdit(done: () => void) {
     await editor.edit();
+    done();
     table.getList();
 }
 

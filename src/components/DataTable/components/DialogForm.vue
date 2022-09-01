@@ -2,17 +2,20 @@
     <ElDialog :model-value="props.visible" @update:model-value="(visible: boolean) => $emit('update:visible', visible)"
         append-to-body @close="handleCancel">
 
-        <FormRendererVue ref="editeFormRef" :model="props.model" :fields="props.fields" />
+        <div v-loading="props.loading">
+            <FormRendererVue ref="editeFormRef" :disabled="disabled" :model="props.model" :fields="props.fields" />
 
-        <div slot="footer">
-            <ElButton type="primary" @click="handleSubmit">保存</ElButton>
-            <ElButton @click="handleCancel">取 消</ElButton>
+            <div slot="footer" v-if="props.mode !== EditeForm.Mode.View">
+                <ElButton type="primary" :loading="submiting" @click="handleSubmit">保存</ElButton>
+                <ElButton @click="handleCancel">取 消</ElButton>
+            </div>
         </div>
+
     </ElDialog>
 </template>
 
 <script setup lang="ts">
-import type { EditeForm } from '../types';
+import { EditeForm } from '../types';
 import FormRendererVue from './FormRenderer.vue';
 
 interface Props {
@@ -20,27 +23,38 @@ interface Props {
     fields: EditeForm.Fields;
     mode: EditeForm.Mode;
     visible?: EditeForm.Visible;
+    loading?: EditeForm.Loading;
 }
 const props = withDefaults(defineProps<Props>(), {
-    visible: false
+    visible: false,
+    loading: true
 })
 
 interface Emits {
     (e: 'update:visible', visible: boolean): void;
-    (e: 'submit'): void;
+    (e: 'submit', done: () => void): void;
 }
 const emits = defineEmits<Emits>();
 
 
 const editeFormRef = ref<InstanceType<typeof FormRendererVue>>();
+const submiting = ref(false);
+const disabled = computed(() => !submiting.value && props.mode === EditeForm.Mode.View);
 
 function handleSubmit() {
     editeFormRef.value?.validate((valid) => {
         if (valid) {
-            emits('submit');
+            new Promise<void>((resolve) => {
+                submiting.value = true;
+
+                emits('submit', resolve);
+            }).then(() => {
+                submiting.value = false;
+            })
         }
     })
 }
+
 
 function handleCancel() {
     editeFormRef.value?.resetFields();

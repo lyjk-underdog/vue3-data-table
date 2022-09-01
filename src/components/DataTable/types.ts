@@ -24,7 +24,6 @@ export namespace FormRenderer {
         rules?: FormItemRule | FormItemRule[]
     }[]
     export type Model = Record<string, any>;
-
     export type Inline = boolean;
     export type Disabled = boolean;
 }
@@ -37,12 +36,18 @@ export namespace SearchForm {
 export namespace EditeForm {
     export const enum Mode {
         Create = 'create',
-        Update = 'update'
+        Update = 'update',
+        View = 'view'
     }
-
     export type Fields = FormRenderer.Fields;
     export type Model = FormRenderer.Model;
     export type Visible = boolean;
+    export type Loading = boolean;
+
+    export type Events = {
+        'update:visible': boolean,
+        'submit': () => void
+    }
 }
 
 export namespace DataTable {

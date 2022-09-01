@@ -41,8 +41,34 @@ function getInfo(id: GetInfo.Req) {
     })
 }
 
+export namespace Create {
+    export type Req = Record<string, any>;
+    export type Res = ResultData<void>;
+}
+function create(form: Update.Req) {
+    return service.request<Create.Req, Create.Res>({
+        url: `/table/data`,
+        method: 'post',
+        data: form
+    })
+}
+
+export namespace Update {
+    export type Req = Record<string, any>;
+    export type Res = ResultData<void>;
+}
+function update(form: Update.Req) {
+    return service.request<Update.Req, Update.Res>({
+        url: `/table/data`,
+        method: 'put',
+        data: form
+    })
+}
+
 export default {
     getList,
     getInfo,
-    remove
+    remove,
+    create,
+    update
 }

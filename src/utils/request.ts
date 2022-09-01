@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 class Service {
     instance: AxiosInstance;
@@ -34,7 +34,7 @@ class Service {
      * @param {RequestConfig} config 
      * @returns {Promise}
     */
-    request<T , U>(config: AxiosRequestConfig<T>): Promise<U> {
+    request<T, U>(config: AxiosRequestConfig<T>): Promise<U> {
         return this.instance.request(config);
     }
 }

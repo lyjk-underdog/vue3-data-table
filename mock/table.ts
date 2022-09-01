@@ -65,6 +65,9 @@ const mocks: mock[] = [
         tpl({ body }) {
             let bodyObj = JSON.parse(body);
 
+            console.log(bodyObj);
+            
+
             data.push({ id: getUid(), ...bodyObj });
 
             return {
@@ -92,12 +95,12 @@ const mocks: mock[] = [
     },
 
     {
-        url: /\/table\/data\/(?<id>\w+)/,
+        url: /\/table\/data/,
         method: 'put',
-        tpl({ url, body }) {
-            let { id: targetId } = /\/table\/data\/(?<id>\w+)/.exec(url)?.groups!;
-            let bodyObj = JSON.parse(body);
+        tpl({ body }) {
 
+            let bodyObj = JSON.parse(body);
+            let targetId = bodyObj.id;
             console.log(bodyObj);
 
             let target = data.find(item => item.id === targetId);

@@ -1,18 +1,21 @@
 <template>
-    <DataTable :apis="apis" :columns="columns" :editor="editor" />
+    <DataTableVue :apis="apis" :columns="columns" :edit-fileds="editFileds" />
 </template>
 
 <script setup lang="tsx">
-import type { TableDataTypes } from '@/components/DataTable/types'
-import DataTable from '@/components/DataTable/index.vue';
+import type { DataTable } from '@/components/DataTable/types'
+import DataTableVue from '@/components/DataTable/index.vue';
 import tableApis from '@/apis/table';
 
-const apis: TableDataTypes.Apis = {
+const apis: DataTable.Apis = {
     list: tableApis.getList,
-    read: tableApis.getInfo
+    read: tableApis.getInfo,
+    create: tableApis.create,
+    update: tableApis.update,
+    remove: tableApis.remove
 }
 
-const columns: TableDataTypes.Column[] = [
+const columns: DataTable.Columns = [
     {
         label: '姓名',
         prop: 'name',
@@ -20,21 +23,36 @@ const columns: TableDataTypes.Column[] = [
         search: {
             type: 'input',
         }
+    },
+    {
+        label: '年龄',
+        prop: 'age',
+        search: {
+            type: 'input',
+        }
     }
 ]
 
-const editor: TableDataTypes.Editor = {
-    model: {
-        name: null
-    },
-    fields: [
-        {
-            type: 'input',
-            label: '姓名',
-            prop: 'name',
+const editFileds: DataTable.EditFields = [
+    {
+        type: 'input',
+        label: '姓名',
+        prop: 'name',
+        rules: {
+            required: true
         }
-    ]
-}
+    },
+
+    {
+        type: 'input',
+        label: '年龄',
+        prop: 'age',
+        rules: {
+            required: true
+        }
+    }
+]
+
 
 </script>
 

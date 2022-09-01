@@ -13,11 +13,15 @@ export default defineConfig({
     vue(),
     vueJsx(),
     AutoImport({
+      imports: ['vue'],
       resolvers: [ElementPlusResolver()],
+      dts: 'types/auto-imports.d.ts',
     }),
     Components({
+      dirs: [],
       resolvers: [ElementPlusResolver()],
-    })
+      dts: 'types/components.d.ts',
+    }),
   ],
   resolve: {
     alias: {

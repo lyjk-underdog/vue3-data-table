@@ -5,8 +5,7 @@
     "src/**/*",
     "src/**/*.vue",
     "mock",
-    "auto-imports.d.ts",
-    "components.d.ts"
+    "types/**/*.ts"
   ],
   "compilerOptions": {
     "baseUrl": ".",

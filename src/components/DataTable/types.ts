@@ -1,5 +1,5 @@
 import type { Component } from 'vue';
-import type { FormItemRule, FormItemProp } from 'element-plus';
+import type { FormItemRule } from 'element-plus';
 
 // 后端返回格式接口
 interface ResultData<T> {
@@ -14,51 +14,54 @@ interface ResPage<T> {
     total: number;
 }
 
-export namespace FormRendererTypes {
-    export interface Field {
+export namespace FormRenderer {
+    export type Fields = {
         type: 'input' | 'select' | Component;
         label: string;
-        prop: FormItemProp;
+        prop: string;
         options?: { label: string, value: any }[],
         attrs?: Record<string, any>,
         rules?: FormItemRule | FormItemRule[]
-    }
-
+    }[]
     export type Model = Record<string, any>;
+
+    export type Inline = boolean;
+    export type Disabled = boolean;
 }
 
-export namespace DialogFormTypes {
+export namespace SearchForm {
+    export type Fields = FormRenderer.Fields;
+    export type Model = FormRenderer.Model;
+}
+
+export namespace EditeForm {
     export const enum Mode {
         Create = 'create',
         Update = 'update'
     }
 
-    export type Field = FormRendererTypes.Field;
-    export type Model = FormRendererTypes.Model;
-
-    export type ReadApi = (...params: any[]) => Promise<ResultData<any>>;
+    export type Fields = FormRenderer.Fields;
+    export type Model = FormRenderer.Model;
+    export type Visible = boolean;
 }
 
-export namespace TableDataTypes {
+export namespace DataTable {
 
-    export interface Apis {
+    export type Apis = {
         list: (...params: any[]) => Promise<ResultData<ResPage<any>>>;
-        create?: (...params: any[]) => Promise<any>;
-        read?: DialogFormTypes.ReadApi;
-        update?: (...params: any[]) => Promise<any>;
-        remove?: (...params: any[]) => Promise<any>
+        create: (...params: any[]) => Promise<any>;
+        read: (...params: any[]) => Promise<ResultData<any>>;
+        update: (...params: any[]) => Promise<any>;
+        remove: (...params: any[]) => Promise<any>
     }
 
-    export interface Column {
+    export type Columns = {
         label: string;
         prop: string,
         formatter?: (row: any) => JSX.Element,
-        search?: Pick<FormRendererTypes.Field, 'type' | 'options' | 'attrs'> & { default?: any }
-    }
+        search?: Pick<FormRenderer.Fields[number], 'type' | 'options' | 'attrs'> & { default?: any }
+    }[]
 
-    export interface Editor {
-        model: DialogFormTypes.Model;
-        fields: DialogFormTypes.Field[];
-    }
-
+    export type EditFields = (FormRenderer.Fields[number] & { default?: any })[]
+    export type Id = string;
 }

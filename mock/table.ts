@@ -66,7 +66,7 @@ const mocks: mock[] = [
             let bodyObj = JSON.parse(body);
 
             console.log(bodyObj);
-            
+
 
             data.push({ id: getUid(), ...bodyObj });
 
@@ -83,9 +83,11 @@ const mocks: mock[] = [
         tpl({ url }) {
             console.log(url);
 
-            let { id: targetId } = /\/table\/data\/(?<id>\w+)/.exec(url)?.groups!;
+            let { id: targetId } = /\/table\/data\/(?<id>.+)/.exec(url)?.groups!;
 
-            data = data.filter(item => item.id !== targetId);
+            let ids = targetId.split(',')
+
+            data = data.filter(item => !ids.includes(item.id));
 
             return {
                 code: 200,

@@ -1,5 +1,7 @@
 <template>
-    <DataTableVue :apis="apis" :columns="columns" :edit-fileds="editFileds" />
+    <DataTableVue :apis="apis" :columns="columns" :edit-fileds="editFileds">
+
+    </DataTableVue>
 </template>
 
 <script setup lang="tsx">
@@ -8,13 +10,14 @@ import DataTableVue from '@/components/DataTable/index.vue';
 import tableApis from '@/apis/table';
 
 const apis: DataTable.Apis = {
-    list: tableApis.getList,
-    read: tableApis.getInfo,
-    create: tableApis.create,
-    update: tableApis.update,
+    list: tableApis.list as DataTable.Apis['list'],
+    read: tableApis.info,
+    create: tableApis.create as DataTable.Apis['create'],
+    update: tableApis.update as DataTable.Apis['update'],
     remove: tableApis.remove
 }
 
+let a = []
 const columns: DataTable.Columns = [
     {
         label: '姓名',
@@ -27,9 +30,6 @@ const columns: DataTable.Columns = [
     {
         label: '年龄',
         prop: 'age',
-        search: {
-            type: 'input',
-        }
     }
 ]
 
@@ -42,7 +42,6 @@ const editFileds: DataTable.EditFields = [
             required: true
         }
     },
-
     {
         type: 'input',
         label: '年龄',
@@ -56,5 +55,15 @@ const editFileds: DataTable.EditFields = [
 
 </script>
 
-<style scoped>
+<style>
+html,
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    background-color: #F5F5F5;
+}
 </style>

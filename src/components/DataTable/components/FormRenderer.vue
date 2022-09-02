@@ -34,7 +34,7 @@ interface Props {
     model: FormRenderer.Model;
     fields: FormRenderer.Fields;
     inline?: FormRenderer.Inline;
-    disabled?: FormRenderer.Disabled
+    disabled?: FormRenderer.Disabled;
 }
 const props = withDefaults(defineProps<Props>(), {
     inline: false,
@@ -63,5 +63,10 @@ defineExpose({
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+:deep(.el-form-item) {
+    .el-form-item__label {
+        font-weight: 700;
+    }
+}
 </style>

@@ -1,8 +1,9 @@
 import axios from 'axios';
-import type { AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig, Canceler } from 'axios';
+
 
 class Service {
-    instance: AxiosInstance;
+    private instance: AxiosInstance;
 
     constructor(config: AxiosRequestConfig) {
         this.instance = axios.create(config);
@@ -10,6 +11,7 @@ class Service {
         // 请求拦截
         this.instance.interceptors.request.use(
             (config) => {
+
                 return config
             },
             (err) => {
@@ -20,9 +22,15 @@ class Service {
         // 响应拦截
         this.instance.interceptors.response.use(
             (response) => {
+
+
                 return response.data;
             },
             (err) => {
+                ElMessage({
+                    type: 'error',
+                    message: err
+                });
                 return Promise.reject(err)
             }
         )
@@ -37,6 +45,7 @@ class Service {
     request<T, U>(config: AxiosRequestConfig<T>): Promise<U> {
         return this.instance.request(config);
     }
+
 }
 
 let service = new Service({

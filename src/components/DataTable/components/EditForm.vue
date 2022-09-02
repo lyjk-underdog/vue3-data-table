@@ -1,13 +1,14 @@
 <template>
-    <ElDialog :model-value="props.visible" @update:model-value="(visible: boolean) => $emit('update:visible', visible)"
-        append-to-body @close="handleCancel">
+    <ElDialog width="600px" :model-value="props.visible" @update:model-value="(visible: boolean) => $emit('update:visible', visible)"
+        append-to-body :close-on-click-modal="false" :close-on-press-escape="false"
+        :show-close="props.mode === EditForm.Mode.View" @close="handleCancel">
 
         <div v-loading="props.loading">
             <FormRendererVue ref="editeFormRef" :disabled="disabled" :model="props.model" :fields="props.fields" />
 
-            <div slot="footer" v-if="props.mode !== EditeForm.Mode.View">
+            <div slot="footer" v-if="props.mode !== EditForm.Mode.View">
                 <ElButton type="primary" :loading="submiting" @click="handleSubmit">保存</ElButton>
-                <ElButton @click="handleCancel">取 消</ElButton>
+                <ElButton v-show="!submiting" @click="handleCancel">取 消</ElButton>
             </div>
         </div>
 
@@ -15,15 +16,15 @@
 </template>
 
 <script setup lang="ts">
-import { EditeForm } from '../types';
+import { EditForm } from '../types';
 import FormRendererVue from './FormRenderer.vue';
 
 interface Props {
-    model: EditeForm.Model;
-    fields: EditeForm.Fields;
-    mode: EditeForm.Mode;
-    visible?: EditeForm.Visible;
-    loading?: EditeForm.Loading;
+    model: EditForm.Model;
+    fields: EditForm.Fields;
+    mode: EditForm.Mode;
+    visible?: EditForm.Visible;
+    loading?: EditForm.Loading;
 }
 const props = withDefaults(defineProps<Props>(), {
     visible: false,
@@ -39,7 +40,7 @@ const emits = defineEmits<Emits>();
 
 const editeFormRef = ref<InstanceType<typeof FormRendererVue>>();
 const submiting = ref(false);
-const disabled = computed(() => !submiting.value && props.mode === EditeForm.Mode.View);
+const disabled = computed(() => submiting.value || props.mode === EditForm.Mode.View);
 
 function handleSubmit() {
     editeFormRef.value?.validate((valid) => {

@@ -1,19 +1,20 @@
 <template>
     <FormRendererVue ref="searchRef" :model="props.model" :fields="props.files" inline>
         <template #footer>
-            <ElButton @click="handleSearch">搜索</ElButton>
-            <ElButton @click="handleReset">重置</ElButton>
+            <ElButton type="primary" :icon="Search" @click="handleSearch">搜索</ElButton>
+            <ElButton :icon="Refresh" @click="handleReset">重置</ElButton>
         </template>
     </FormRendererVue>
 </template>
 
 <script setup lang="ts">
-import type { FormRenderer, SearchForm } from '../types';
+import type { SearchForm } from '../types';
 import FormRendererVue from './FormRenderer.vue';
+import { Search, Refresh } from '@element-plus/icons-vue'
 
 interface Props {
-    model: FormRenderer.Model;
-    files: FormRenderer.Fields;
+    model: SearchForm.Model;
+    files: SearchForm.Fields;
 }
 const props = defineProps<Props>();
 

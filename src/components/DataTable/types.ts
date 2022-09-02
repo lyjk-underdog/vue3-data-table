@@ -8,6 +8,12 @@ interface ResultData<T> {
     data: T;
 }
 
+//分页请求参数
+interface ReqPage {
+    pageNum: number,
+    pageSize: number
+}
+
 // 分页响应参数
 interface ResPage<T> {
     rows: T[];
@@ -33,7 +39,7 @@ export namespace SearchForm {
     export type Model = FormRenderer.Model;
 }
 
-export namespace EditeForm {
+export namespace EditForm {
     export const enum Mode {
         Create = 'create',
         Update = 'update',
@@ -53,11 +59,11 @@ export namespace EditeForm {
 export namespace DataTable {
 
     export type Apis = {
-        list: (...params: any[]) => Promise<ResultData<ResPage<any>>>;
-        create: (...params: any[]) => Promise<any>;
-        read: (...params: any[]) => Promise<ResultData<any>>;
-        update: (...params: any[]) => Promise<any>;
-        remove: (...params: any[]) => Promise<any>
+        list: (params: Record<string , any> & ReqPage) => Promise<ResultData<ResPage<any>>>;
+        create?: (form: Record<string, any>) => Promise<any>;
+        read?: (targetId: string) => Promise<ResultData<any>>;
+        update?: (form: Record<string, any>) => Promise<any>;
+        remove?: (idOrIds: string | string[]) => Promise<any>
     }
 
     export type Columns = {
@@ -69,4 +75,11 @@ export namespace DataTable {
 
     export type EditFields = (FormRenderer.Fields[number] & { default?: any })[]
     export type Id = string;
+    export type HasDelete = boolean;
+    export type HasEdit = boolean;
+    export type HasNew = boolean;
+    export type HasView = boolean;
+    export type HasOperation = boolean;
+    export type HasPagination = boolean;
+    export type PageSize = number;
 }

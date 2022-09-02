@@ -2,7 +2,7 @@ import Mock from 'mockjs'
 import tableMocks from './table';
 
 Mock.setup({
-    timeout: 1500
+    timeout: 800
 })
 
 const mocks = [

@@ -10,13 +10,17 @@ function useHint(
         try {
             await ElMessageBox.confirm(`是否${message}`, '提示', {
                 type: confirmType,
+                showClose: false,
+                closeOnClickModal: false,
+                closeOnPressEscape: false,
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 beforeClose: async (action, instance, done) => {
                     if (action === "confirm") {
                         try {
                             instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = "删除中...";
+                            instance.showCancelButton = false;
+                            instance.confirmButtonText = `${message}中...`;
 
                             await cb();
 
@@ -26,12 +30,14 @@ function useHint(
                             });
 
                             instance.confirmButtonLoading = false;
+                            instance.showCancelButton = true;
                             instance.confirmButtonText = "确定";
                             done();
 
                             resolve();
                         } catch (e) {
                             instance.confirmButtonLoading = false;
+                            instance.showCancelButton = true;
                             instance.confirmButtonText = "确定";
 
                             reject(e);
@@ -46,7 +52,7 @@ function useHint(
             if (e === "cancel") {
                 ElMessage({
                     type: "info",
-                    message: `已取消${message}!`
+                    message: `已取消${message}`
                 });
             }
 

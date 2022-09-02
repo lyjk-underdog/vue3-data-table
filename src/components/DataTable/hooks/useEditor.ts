@@ -1,20 +1,20 @@
 import type { DataTable } from '../types';
-import { EditeForm } from '../types';
+import { EditForm } from '../types';
 import useHint from './useHint';
 
-function useEditor(fields: DataTable.EditFields, apis: DataTable.Apis, id: DataTable.Id) {
+function useEditor(fields: DataTable.EditFields, apis: Required<DataTable.Apis>, id: DataTable.Id) {
 
     const state = reactive<{
-        visible: EditeForm.Visible
-        form: EditeForm.Model,
-        fields: EditeForm.Fields,
-        mode: EditeForm.Mode,
-        loading: EditeForm.Loading
+        visible: EditForm.Visible
+        form: EditForm.Model,
+        fields: EditForm.Fields,
+        mode: EditForm.Mode,
+        loading: EditForm.Loading
     }>({
         visible: false,
         form: {},
         fields: [],
-        mode: EditeForm.Mode.Create,
+        mode: EditForm.Mode.Create,
         loading: false
     })
 
@@ -32,11 +32,11 @@ function useEditor(fields: DataTable.EditFields, apis: DataTable.Apis, id: DataT
     })
 
     // editor弹窗
-    async function open(mode: EditeForm.Mode, row?: any) {
+    async function open(mode: EditForm.Mode, row?: any) {
         state.mode = mode;
         state.visible = true;
 
-        if (mode === EditeForm.Mode.Update || mode === EditeForm.Mode.View) {
+        if (mode === EditForm.Mode.Update || mode === EditForm.Mode.View) {
             state.loading = true;
 
             let { data } = await apis.read(row[id]);
@@ -49,14 +49,19 @@ function useEditor(fields: DataTable.EditFields, apis: DataTable.Apis, id: DataT
     }
 
     // 删除
-    function remove(row: any) {
-        return useHint(() => apis.remove(row[id]), '删除');
+    function remove(rowOrIds: Record<string, any> | string[]) {
+        if (rowOrIds instanceof Array) {
+            return useHint(() => apis.remove(rowOrIds), '删除');
+        }
+
+        return useHint(() => apis.remove(rowOrIds[id]), '删除');
+
     }
 
     // 新增、更新
     async function edit() {
 
-        if (state.mode === EditeForm.Mode.Create) {
+        if (state.mode === EditForm.Mode.Create) {
             await apis.create(state.form);
             ElMessage({
                 type: 'success',
@@ -64,7 +69,7 @@ function useEditor(fields: DataTable.EditFields, apis: DataTable.Apis, id: DataT
             })
         }
 
-        if (state.mode === EditeForm.Mode.Update) {
+        if (state.mode === EditForm.Mode.Update) {
             await apis.update(state.form);
             ElMessage({
                 type: 'success',

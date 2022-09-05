@@ -103,7 +103,6 @@ const mocks: mock[] = [
 
             let bodyObj = JSON.parse(body);
             let targetId = bodyObj.id;
-            console.log(bodyObj);
 
             let target = data.find(item => item.id === targetId);
 

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 import type { DataTable } from '../types';
 
-function useTable(apis: DataTable.Apis, params?: Ref<any>) {
+function useTable(apis: DataTable.Props.Apis, params?: Ref<any>) {
 
     const state = reactive<{
         loading: boolean,

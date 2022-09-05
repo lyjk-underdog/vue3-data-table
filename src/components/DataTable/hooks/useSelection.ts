@@ -1,6 +1,6 @@
 import type { DataTable } from '../types';
 
-function useSelection(id: DataTable.Id) {
+function useSelection(id: DataTable.Props.Id) {
     const state = reactive<{
         list: any[],
         isSelected: boolean,

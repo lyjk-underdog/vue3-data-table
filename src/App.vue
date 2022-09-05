@@ -8,17 +8,17 @@
 import type { DataTable } from '@/components/DataTable/types'
 import DataTableVue from '@/components/DataTable/index.vue';
 import tableApis from '@/apis/table';
+import SelfInputVue from './SelfInput.vue';
 
-const apis: DataTable.Apis = {
-    list: tableApis.list as DataTable.Apis['list'],
+const apis: DataTable.Props.Apis = {
+    list: tableApis.list as DataTable.Props.Apis['list'],
     read: tableApis.info,
-    create: tableApis.create as DataTable.Apis['create'],
-    update: tableApis.update as DataTable.Apis['update'],
+    create: tableApis.create as DataTable.Props.Apis['create'],
+    update: tableApis.update as DataTable.Props.Apis['update'],
     remove: tableApis.remove
 }
 
-let a = []
-const columns: DataTable.Columns = [
+const columns: DataTable.Props.Columns = [
     {
         label: '姓名',
         prop: 'name',
@@ -33,9 +33,9 @@ const columns: DataTable.Columns = [
     }
 ]
 
-const editFileds: DataTable.EditFields = [
+const editFileds: DataTable.Props.EditFields = [
     {
-        type: 'input',
+        type: markRaw(SelfInputVue),
         label: '姓名',
         prop: 'name',
         rules: {

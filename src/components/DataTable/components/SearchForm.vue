@@ -13,8 +13,8 @@ import FormRendererVue from './FormRenderer.vue';
 import { Search, Refresh } from '@element-plus/icons-vue'
 
 interface Props {
-    model: SearchForm.Model;
-    files: SearchForm.Fields;
+    model: SearchForm.Props.Model;
+    files: SearchForm.Props.Fields;
 }
 const props = defineProps<Props>();
 

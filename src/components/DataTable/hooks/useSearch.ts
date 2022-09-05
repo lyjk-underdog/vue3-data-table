@@ -1,10 +1,10 @@
 import type { DataTable, SearchForm } from '../types';
 
-function useSearch(columns: DataTable.Columns) {
+function useSearch(columns: DataTable.Props.Columns) {
 
     const state = reactive<{
-        params: SearchForm.Model,
-        fields: SearchForm.Fields
+        params: SearchForm.Props.Model,
+        fields: SearchForm.Props.Fields
     }>({
         params: {},
         fields: []

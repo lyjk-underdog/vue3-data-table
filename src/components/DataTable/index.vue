@@ -69,17 +69,17 @@ import useEditor from './hooks/useEditor';
 import useSelection from './hooks/useSelection';
 
 interface Props {
-    id?: DataTable.Id;
-    apis: DataTable.Apis;
-    columns?: DataTable.Columns;
-    editFileds?: DataTable.EditFields;
-    hasDelete?: DataTable.HasDelete,
-    hasEdit?: DataTable.HasEdit,
-    hasNew?: DataTable.HasNew,
-    hasView?: DataTable.HasView,
-    hasOperation?: DataTable.HasOperation,
-    hasPagination?: DataTable.HasPagination,
-    pageSize?: DataTable.PageSize
+    id?: DataTable.Props.Id;
+    apis: DataTable.Props.Apis;
+    columns?: DataTable.Props.Columns;
+    editFileds?: DataTable.Props.EditFields;
+    hasDelete?: DataTable.Props.HasDelete,
+    hasEdit?: DataTable.Props.HasEdit,
+    hasNew?: DataTable.Props.HasNew,
+    hasView?: DataTable.Props.HasView,
+    hasOperation?: DataTable.Props.HasOperation,
+    hasPagination?: DataTable.Props.HasPagination,
+    pageSize?: DataTable.Props.PageSize
 }
 const props = withDefaults(defineProps<Props>(), {
     id: 'id',
@@ -116,7 +116,7 @@ const table = useTable(props.apis, params);
 const selection = useSelection(props.id);
 
 // dialogForm
-const editor = useEditor(props.editFileds, props.apis as Required<DataTable.Apis>, props.id);
+const editor = useEditor(props.editFileds, props.apis as Required<DataTable.Props.Apis>, props.id);
 
 async function handleDelete(rowOrIds: Record<string, any> | string[]) {
     try {

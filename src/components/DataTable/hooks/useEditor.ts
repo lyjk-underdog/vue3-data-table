@@ -2,14 +2,14 @@ import type { DataTable } from '../types';
 import { EditForm } from '../types';
 import useHint from './useHint';
 
-function useEditor(fields: DataTable.EditFields, apis: Required<DataTable.Apis>, id: DataTable.Id) {
+function useEditor(fields: DataTable.Props.EditFields, apis: Required<DataTable.Props.Apis>, id: DataTable.Props.Id) {
 
     const state = reactive<{
-        visible: EditForm.Visible
-        form: EditForm.Model,
-        fields: EditForm.Fields,
-        mode: EditForm.Mode,
-        loading: EditForm.Loading
+        visible: EditForm.Props.Visible
+        form: EditForm.Props.Model,
+        fields: EditForm.Props.Fields,
+        mode: EditForm.Props.Mode,
+        loading: EditForm.Props.Loading
     }>({
         visible: false,
         form: {},

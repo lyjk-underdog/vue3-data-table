@@ -31,10 +31,10 @@ import type { ElForm, FormValidateCallback, FormItemProp } from 'element-plus';
 import type { Arrayable } from 'element-plus/es/utils/typescript';
 
 interface Props {
-    model: FormRenderer.Model;
-    fields: FormRenderer.Fields;
-    inline?: FormRenderer.Inline;
-    disabled?: FormRenderer.Disabled;
+    model: FormRenderer.Props.Model;
+    fields: FormRenderer.Props.Fields;
+    inline?: FormRenderer.Props.Inline;
+    disabled?: FormRenderer.Props.Disabled;
 }
 const props = withDefaults(defineProps<Props>(), {
     inline: false,
@@ -47,12 +47,12 @@ function validate(callback?: FormValidateCallback | undefined) {
     return elFormRef.value?.validate(callback);
 }
 
-function resetFields(props?: Arrayable<FormItemProp> | undefined) {
-    return elFormRef.value?.resetFields(props);
+function resetFields(itemPorps?: Arrayable<FormItemProp> | undefined) {
+    return elFormRef.value?.resetFields(itemPorps);
 }
 
-function clearValidate(props?: Arrayable<FormItemProp> | undefined) {
-    return elFormRef.value?.clearValidate(props);
+function clearValidate(itemPorps?: Arrayable<FormItemProp> | undefined) {
+    return elFormRef.value?.clearValidate(itemPorps);
 }
 
 defineExpose({
